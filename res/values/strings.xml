@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">彩票测</string>
+    <string name="action_settings">设置</string>
+    <string name="nav_str_ssh">双色球</string>
+    <string name="nav_str_zq">足球</string>
+    <string name="nav_str_dlt">大乐透</string>
+    <string name="ssh_btn_test_probability">搜索</string>
+    <string name="ssh_input_test_probability">输入球号</string>
+    <string name="title_activity_ssh">SSHActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+</resources>
