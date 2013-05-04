@@ -2,29 +2,34 @@ package com.bd17kaka.lotteryui;
 
 import android.annotation.TargetApi;
 import android.app.ActionBar;
-import android.os.Bundle;
 import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.NavUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import android.widget.EditText;
+
+import com.bd17kaka.service.LotterySearcherUtil;
 
 public class SSHActivity extends FragmentActivity implements
 		ActionBar.OnNavigationListener {
+
+	private static String ITEM1_INPUT_RED_NUMS = "";
 
 	/**
 	 * The serialization (saved instance state) Bundle key representing the
 	 * current dropdown position.
 	 */
 	private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +47,17 @@ public class SSHActivity extends FragmentActivity implements
 				new ArrayAdapter<String>(getActionBarThemedContextCompat(),
 						android.R.layout.simple_list_item_1,
 						android.R.id.text1, new String[] {
-								getString(R.string.title_section1),
-								getString(R.string.title_section2),
-								getString(R.string.title_section3), }), this);
+								getString(R.string.title_ssh_section1),
+								getString(R.string.title_ssh_section2),
+								getString(R.string.title_ssh_section3), }), this);
+		// 选择指定的item菜单
+		Intent intent = getIntent();
+		// 这里获取值的时候，在put的时候是什么类型，那么在这里调用get**Extra方法时。**就要是相应的类型
+		int seletedItem = intent.getIntExtra(MainActivity.SELECTED_ITEM_INDEX, -1);
+		actionBar.setSelectedNavigationItem(seletedItem);
+
+		String redBalls = intent.getStringExtra(MainActivity.BALL_NUMS);
+		ITEM1_INPUT_RED_NUMS = redBalls;
 	}
 
 	/**
@@ -114,12 +127,45 @@ public class SSHActivity extends FragmentActivity implements
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_ssh_dummy,
-					container, false);
-			TextView dummyTextView = (TextView) rootView
-					.findViewById(R.id.section_label);
-			dummyTextView.setText(Integer.toString(getArguments().getInt(
-					ARG_SECTION_NUMBER)));
+			View rootView = null;
+			
+			// 根据不同的item，现在不同的xml文件
+			int selectedItemIndex = (getArguments().getInt(ARG_SECTION_NUMBER));
+			switch (selectedItemIndex) {
+			case 1:
+				rootView = inflater.inflate(R.layout.fragment_ssh_dummy,
+						container, false);
+				if (ITEM1_INPUT_RED_NUMS != null && ITEM1_INPUT_RED_NUMS != "") {
+					// 如果输入的红球序列号不为空的话，查询其概率
+					ConnectivityManager connMgr = 
+							(ConnectivityManager) rootView.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+					NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+					EditText rsEditText = (EditText) rootView.findViewById(
+							R.id.ssh_input_show_rs);
+					rsEditText.setText("查询中...");
+					if (networkInfo != null && networkInfo.isConnected()) {
+						// 有网络连接就查询
+						new LotterySearcherUtil().getSSHProbability(ITEM1_INPUT_RED_NUMS, rsEditText);
+					} else {
+						rsEditText.setText("没有可用的网络.");
+					}
+					
+					// 将双色球号输入框设置为用户输入
+					EditText inputEditText = (EditText) rootView.findViewById(
+							R.id.ssh_input_test_probability);
+					inputEditText.setText(ITEM1_INPUT_RED_NUMS);
+				}
+				break;
+			case 2:
+				rootView = inflater.inflate(R.layout.fragment_ssh_dummy_show_rs,
+						container, false);
+				break;
+			case 3:
+				rootView = inflater.inflate(R.layout.fragment_ssh_dummy_show_rs,
+						container, false);
+				break;
+			}
+			
 			return rootView;
 		}
 	}

@@ -3,14 +3,28 @@
 
     <string name="app_name">彩票测</string>
     <string name="action_settings">设置</string>
+    
     <string name="nav_str_ssh">双色球</string>
     <string name="nav_str_zq">足球</string>
     <string name="nav_str_dlt">大乐透</string>
-    <string name="ssh_btn_test_probability">搜索</string>
-    <string name="ssh_input_test_probability">输入球号</string>
-    <string name="title_activity_ssh">SSHActivity</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-
+    
+    <string name="main_ssh_input_test_probability">输入红球号,空格隔开</string>
+    <string name="main_ssh_btn_test_probability">测试</string>
+    <string name="main_zq_input_test_probability">输入足彩号</string>
+    <string name="main_zq_btn_test_probability">测试</string>
+    <string name="main_dlt_input_test_probability">输入大乐透红球球号</string>
+    <string name="main_dlt_btn_test_probability">测试</string>
+    
+    
+    <!-- ssh_activity -->
+    <string name="title_activity_ssh">双色球</string>
+    <string name="title_ssh_section1">双色球首页</string>
+    <string name="title_ssh_section2">Section 2</string>
+    <string name="title_ssh_section3">Section 3</string>
+    
+    <!-- ssh activity section1 -->
+    <string name="ssh_input_test_probability">输入红球号，空格隔开</string>
+    <string name="ssh_btn_test_probability">测试双色球</string>
+    <string name="ssh_input_show_rs">测试结果</string>
+    
 </resources>

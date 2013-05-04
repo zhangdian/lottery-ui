@@ -14,12 +14,23 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 
+	/**
+	 * 子页面的下拉菜单中，选中的item的index
+	 */
+	public static final String SELECTED_ITEM_INDEX = "selected_item_index";
+	/**
+	 * 要测试的号码序列
+	 */
+	public static final String BALL_NUMS= "ball_nums";
+	
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
 	 * fragments for each of the sections. We use a
@@ -161,30 +172,65 @@ public class MainActivity extends FragmentActivity implements
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main_dummy,
-					container, false);
 //			TextView dummyTextView = (TextView) rootView
 //					.findViewById(R.id.section_label);
 //			dummyTextView.setText(Integer.toString(getArguments().getInt(
 //					ARG_SECTION_NUMBER)));
 			
-			/**
-			 * 根据ARG_SECTION_NUMBER，确定按钮的响应方法
-			 */
+			int sectionNum = getArguments().getInt(ARG_SECTION_NUMBER);
+			View rootView = null;
+			Button btn = null;
+			switch (sectionNum) {
+			case 1:
+				rootView = inflater.inflate(R.layout.fragment_main_dummy_ssh,
+						container, false);
+				btn = (Button) rootView.findViewById(R.id.main_ssh_btn_test_probability);
+				btn.setText("测双色球");
+				break;
+			case 2:
+				rootView = inflater.inflate(R.layout.fragment_main_dummy_zq,
+						container, false);
+				btn = (Button) rootView.findViewById(R.id.main_zq_btn_test_probability);
+				btn.setText("测足球彩票");
+				break;
+			case 3:
+				rootView = inflater.inflate(R.layout.fragment_main_dummy_dlt,
+						container, false);
+				btn = (Button) rootView.findViewById(R.id.main_dlt_btn_test_probability);
+				btn.setText("测大乐透");
+				break;
+			}
 			
 			return rootView;
 		}
+	}
+	
+	/**
+	 * 点击打开双色球页面
+	 * @param view
+	 */
+	public void openSSHWnd(View view) {
+		Intent intent = new Intent(this, SSHActivity.class);
+		EditText editText = (EditText) findViewById(R.id.main_ssh_input_test_probability);
+		String sshRedBalls = editText.getText().toString();
+		intent.putExtra(SELECTED_ITEM_INDEX, 0);
+		intent.putExtra(BALL_NUMS, sshRedBalls);
+		startActivity(intent);
+	}
+	
+	/**
+	 * 点击打开足球彩票页面
+	 * @param view
+	 */
+	public void openZQWnd(View view) {
 
 	}
 	
 	/**
-	 * 点击测试概率
+	 * 点击打开大乐透页面
 	 * @param view
 	 */
-	public void sendMessage(View view) {
-		Intent intent = new Intent(this, SSHActivity.class);
-		EditText editText = (EditText) findViewById(R.id.ssh_input_test_probability);
-//		String message = editText.getText().toString();
-		startActivity(intent);
+	public void openDLTWnd(View view) {
+
 	}
 }
